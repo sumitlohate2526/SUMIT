@@ -1,63 +1,74 @@
+<!DOCTYPE html>
 <html>
+<head>
+  <title>X and O Game</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+    }
+    table {
+      margin: auto;
+      border-collapse: collapse;
+    }
+    td {
+      width: 80px;
+      height: 80px;
+      border: 2px solid black;
+      font-size: 40px;
+      text-align: center;
+      cursor: pointer;
+    }
+    td:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
 <body>
 
-<table border="1">
+<h2>X and O Game</h2>
+<p id="turn">Turn: X</p>
+
+<table>
   <tr>
-    <th>Sr No.</th>
-    <th>Name</th>
-    <th>Age</th>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
   </tr>
   <tr>
-    <td>1</td>
-    <td>Yash</td>
-    <td>18</td>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
   </tr>
   <tr>
-    <td>2</td>
-    <td>Amit</td>
-    <td>20</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Riya</td>
-    <td>19</td>
-  </tr>
-  <tr>
-    <td>4</td>
-    <td>Rahul</td>
-    <td>21</td>
-  </tr>
-  <tr>
-    <td>5</td>
-    <td>Pooja</td>
-    <td>18</td>
-  </tr>
-  <tr>
-    <td>6</td>
-    <td>Neha</td>
-    <td>22</td>
-  </tr>
-  <tr>
-    <td>7</td>
-    <td>Karan</td>
-    <td>20</td>
-  </tr>
-  <tr>
-    <td>8</td>
-    <td>Anjali</td>
-    <td>19</td>
-  </tr>
-  <tr>
-    <td>9</td>
-    <td>Vikas</td>
-    <td>23</td>
-  </tr>
-  <tr>
-    <td>10</td>
-    <td>Priya</td>
-    <td>21</td>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
+    <td onclick="play(this)"></td>
   </tr>
 </table>
+
+<button onclick="resetGame()">Reset Game</button>
+
+<script>
+  let currentPlayer = "X";
+
+  function play(cell) {
+    if (cell.innerHTML === "") {
+      cell.innerHTML = currentPlayer;
+      currentPlayer = (currentPlayer === "X") ? "O" : "X";
+      document.getElementById("turn").innerHTML = "Turn: " + currentPlayer;
+    }
+  }
+
+  function resetGame() {
+    let cells = document.getElementsByTagName("td");
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].innerHTML = "";
+    }
+    currentPlayer = "X";
+    document.getElementById("turn").innerHTML = "Turn: X";
+  }
+</script>
 
 </body>
 </html>

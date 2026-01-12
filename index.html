@@ -6,21 +6,35 @@
     body {
       text-align: center;
       font-family: Arial;
+      background-color: #f5f5f5;
     }
     table {
       margin: auto;
       border-collapse: collapse;
     }
     td {
-      width: 80px;
-      height: 80px;
-      border: 2px solid black;
+      width: 90px;
+      height: 90px;
+      border: 3px solid black;
       font-size: 40px;
       text-align: center;
       cursor: pointer;
+      background: white;
     }
     td:hover {
-      background-color: #f0f0f0;
+      background-color: #e0e0e0;
+    }
+    #message {
+      font-size: 24px;
+      margin: 15px;
+      color: green;
+    }
+    .celebrate {
+      animation: pop 0.5s infinite alternate;
+    }
+    @keyframes pop {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
     }
   </style>
 </head>
@@ -28,45 +42,80 @@
 
 <h2>X and O Game</h2>
 <p id="turn">Turn: X</p>
+<p id="message"></p>
 
 <table>
   <tr>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
+    <td onclick="play(this,0)"></td>
+    <td onclick="play(this,1)"></td>
+    <td onclick="play(this,2)"></td>
   </tr>
   <tr>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
+    <td onclick="play(this,3)"></td>
+    <td onclick="play(this,4)"></td>
+    <td onclick="play(this,5)"></td>
   </tr>
   <tr>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
-    <td onclick="play(this)"></td>
+    <td onclick="play(this,6)"></td>
+    <td onclick="play(this,7)"></td>
+    <td onclick="play(this,8)"></td>
   </tr>
 </table>
 
+<br>
 <button onclick="resetGame()">Reset Game</button>
 
 <script>
   let currentPlayer = "X";
+  let board = ["", "", "", "", "", "", "", "", ""];
+  let gameOver = false;
 
-  function play(cell) {
-    if (cell.innerHTML === "") {
+  const winPatterns = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  function play(cell, index) {
+    if (board[index] === "" && !gameOver) {
+      board[index] = currentPlayer;
       cell.innerHTML = currentPlayer;
-      currentPlayer = (currentPlayer === "X") ? "O" : "X";
+
+      if (checkWin()) {
+        document.getElementById("message").innerHTML = "🎉 " + currentPlayer + " Wins! 🎉";
+        document.body.classList.add("celebrate");
+        gameOver = true;
+        return;
+      }
+
+      if (!board.includes("")) {
+        document.getElementById("message").innerHTML = "😐 It's a Draw!";
+        gameOver = true;
+        return;
+      }
+
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
       document.getElementById("turn").innerHTML = "Turn: " + currentPlayer;
     }
   }
 
+  function checkWin() {
+    return winPatterns.some(pattern =>
+      pattern.every(index => board[index] === currentPlayer)
+    );
+  }
+
   function resetGame() {
+    board = ["", "", "", "", "", "", "", "", ""];
     let cells = document.getElementsByTagName("td");
     for (let i = 0; i < cells.length; i++) {
       cells[i].innerHTML = "";
     }
     currentPlayer = "X";
+    gameOver = false;
     document.getElementById("turn").innerHTML = "Turn: X";
+    document.getElementById("message").innerHTML = "";
+    document.body.classList.remove("celebrate");
   }
 </script>
 
